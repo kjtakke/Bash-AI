@@ -1,5 +1,5 @@
 # Bash-AI
-
+> [https://github.com/kjtakke/xai](https://github.com/kjtakke/xai)
 This shell script provides a simple terminal-based interface for interacting with a local AI service using natural language. It leverages [Gum](https://github.com/charmbracelet/gum) for stylish prompts and `bat`/`batcat` for clean output formatting.
 
 ## Features
