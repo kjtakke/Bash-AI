@@ -9,19 +9,44 @@ function ask_question() {
   RESPONSE=$(curl -s -X POST "$AI_URL/ask" \
     -H "Content-Type: application/json" \
     -d "{\"question\": \"$QUESTION\"}")
-  # clear
   echo "$RESPONSE" | batcat --language=md --style=plain --paging=never
 }
 
 function clear_chat() {
   RESPONSE=$(curl -s -X POST "$AI_URL/clear_assistant")
-  # clear
   echo "Chat Thread Cleared" | batcat --language=md --style=plain --paging=never
 }
 
+function list_models() {
+  RESPONSE=$(curl -s "$AI_URL/list_models")
+  echo "$RESPONSE" | batcat --language=md --style=plain --paging=never
+}
 
-if [[ "$1" == "--clear" ]]; then
-  clear_chat
-else
-  ask_question
-fi
+
+function change_model() {
+  MODEL="$1"
+  if [[ -z "$MODEL" ]]; then
+    echo "Error: No model specified."
+    exit 1
+  fi
+  RESPONSE=$(curl -s -X POST "$AI_URL/change_model" \
+    -H "Content-Type: application/json" \
+    -d "{\"model\": \"$MODEL\"}")
+  echo "$RESPONSE" | batcat --language=md --style=plain --paging=never
+}
+
+# Command-line argument handling
+case "$1" in
+  --clear)
+    clear_chat
+    ;;
+  --models)
+    list_models
+    ;;
+  --change-model)
+    change_model "$2"
+    ;;
+  *)
+    ask_question
+    ;;
+esac
