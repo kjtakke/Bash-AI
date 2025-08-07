@@ -22,7 +22,6 @@ function list_models() {
   echo "$RESPONSE" | batcat --language=md --style=plain --paging=never
 }
 
-
 function change_model() {
   MODEL="$1"
   if [[ -z "$MODEL" ]]; then
@@ -35,8 +34,30 @@ function change_model() {
   echo "$RESPONSE" | batcat --language=md --style=plain --paging=never
 }
 
+function show_help() {
+  cat <<EOF | batcat --language=md --style=plain --paging=never
+Usage: $(basename "$0") [OPTIONS]
+
+Without options, opens interactive prompt to ask a question.
+
+Options:
+  -h, --help             Show this help and exit
+  --clear                Clear the current chat thread
+  --models               List available models
+  --change-model NAME    Change the active model to NAME
+
+Examples:
+  $(basename "$0") --models
+  $(basename "$0") --change-model llama3.1
+  $(basename "$0")
+EOF
+}
+
 # Command-line argument handling
 case "$1" in
+  -h|--help)
+    show_help
+    ;;
   --clear)
     clear_chat
     ;;
